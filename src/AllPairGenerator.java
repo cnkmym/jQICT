@@ -130,32 +130,7 @@ public class AllPairGenerator {
 		}
 	}
 
-	public static void main(String[] args) {
-		System.out.println("\nBegin pair-wise testset generation\n");
-
-		AllPairGenerator generator = new AllPairGenerator();
-
-		// List<AllPairFactor> factors = new ArrayList<AllPairFactor>() {
-		// private static final long serialVersionUID = 1L;
-		//
-		// {
-		// add(new AllPairFactor(0, "Parameter0",
-		// new String[] { "a", "b" }));
-		// add(new AllPairFactor(1, "Parameter1", new String[] { "c", "d",
-		// "e", "f" }));
-		// add(new AllPairFactor(2, "Parameter2", new String[] { "01",
-		// "001" }));
-		// add(new AllPairFactor(3, "Parameter3", new String[] { "g", "h",
-		// "i" }));
-		// add(new AllPairFactor(4, "Parameter4",
-		// new String[] { "j", "k" }));
-		// }
-		// };
-
-		displayResults(generator.generateFromFile());
-
-		System.out.println("\nEnd\n");
-	}
+	
 
 	private void initializePairs() {
 		// determine the number of pairs for this input set
@@ -581,20 +556,7 @@ public class AllPairGenerator {
 
 	}
 
-	private static void displayResults(List<List<FactorValue>> patterns) {
-		// Display results
-
-		System.out.println("\nResult testsets: \n");
-		int index = 0;
-		for (List<FactorValue> pattern : patterns) {
-			System.out.print(index++ + ": ");
-			for (FactorValue value : pattern) {
-				System.out.print(value.getValue() + " ");
-			}
-			System.out.println();
-		}
-	}
-
+	
 	private List<List<FactorValue>> convertToPatterns() {
 		List<List<FactorValue>> patterns = new ArrayList<List<FactorValue>>(
 				testSets.size());
