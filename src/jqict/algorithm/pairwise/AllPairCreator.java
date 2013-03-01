@@ -6,6 +6,6 @@ import jqict.core.Dimension;
 
 interface AllPairCreator {
 
-	public abstract List<CombinationPair> generate(List<Dimension> dims);
+        public abstract List<CombinationPair> generate(List<Dimension> dims);
 
 }

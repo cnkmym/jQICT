@@ -1,18 +1,16 @@
 package jqict.core;
 
+public class Generator {
 
+        private final Algorithm algorithm;
 
-public class Generator{
+        public Generator(Algorithm algorithm) {
+                this.algorithm = algorithm;
+        }
 
-	private final Algorithm algorithm;
-	
-	public Generator(Algorithm algorithm) {
-		this.algorithm = algorithm;
-	}
+        public CombinationTable generate(DimensionTable domain,
+                        int maxCombinationLimit) {
+                return algorithm.generate(domain, maxCombinationLimit);
+        }
 
-	public CombinationTable generate(Domain domain) {
-		return algorithm.generate(domain);
-	}
-
-	
 }

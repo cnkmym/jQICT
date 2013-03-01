@@ -5,25 +5,20 @@ import jqict.core.CombinationValue;
 
 class CombinationPair {
 
-	private final CombinationValue first; 
-	private final CombinationValue second;
-	
-	public CombinationPair(CombinationValue first, CombinationValue second) {
-		this.first = first;
-		this.second = second;
-	}
+        private final CombinationValue first;
+        private final CombinationValue second;
 
-	public CombinationValue getFirst() {
-		return first;
-	}
+        public CombinationPair(CombinationValue first, CombinationValue second) {
+                this.first = first;
+                this.second = second;
+        }
 
-	public CombinationValue getSecond() {
-		return second;
-	} 
-	
-	
-	
-	
-	
+        public CombinationValue getFirst() {
+                return first;
+        }
+
+        public CombinationValue getSecond() {
+                return second;
+        }
 
 }

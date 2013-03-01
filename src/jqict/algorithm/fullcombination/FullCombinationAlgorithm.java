@@ -10,34 +10,60 @@ import jqict.core.Combination;
 import jqict.core.CombinationTable;
 import jqict.core.CombinationValue;
 import jqict.core.Dimension;
-import jqict.core.Domain;
+import jqict.core.DimensionTable;
 
 public class FullCombinationAlgorithm implements Algorithm {
 
-	@Override
-	public CombinationTable generate(Domain domain) {
+        @Override
+        public CombinationTable generate(DimensionTable domain,
+                        int maxCombinationLimit) {
 
-		Deque<CombinationValue> stack = new ArrayDeque<CombinationValue>();
-		List<Combination> combinations = new ArrayList<Combination>();
-		combination(domain.getDimensions(), 0, stack, combinations);
-		
-		return new CombinationTable(combinations);
-	}
+                Deque<CombinationValue> stack = new ArrayDeque<CombinationValue>();
+                List<Combination> resultList = new ArrayList<Combination>();
+                if (maxCombinationLimit != 0) {
+                        combine(domain.getDimensions(), 0, stack, resultList,
+                                        maxCombinationLimit);
+                }
 
-	private void combination(List<Dimension> dims, int pos, Deque<CombinationValue> stack, List<Combination> combinations) {
+                return new CombinationTable(resultList);
+        }
 
-		if (!(pos < dims.size()))
-			return;
+        /**
+         * 
+         * @param dims
+         * @param fromPosition
+         * @param stack
+         * @param resultList
+         * @param maxCombinationLimit
+         */
+        private boolean combine(List<Dimension> dims, int fromPosition,
+                        Deque<CombinationValue> stack,
+                        List<Combination> resultList, int maxCombinationLimit) {
 
-		Dimension dim = dims.get(pos);
-		for (String value : dim.getValues()) {
-			stack.push(new CombinationValue(dim.getName(), value));
-			combination(dims, pos + 1, stack, combinations);
-			if (pos == dims.size() - 1) {
-				combinations.add(new Combination(new ArrayList<CombinationValue>(stack)));
-			}
-			stack.pop();
-		}
-	}
+                if (fromPosition >= dims.size()) {
+                        return true;
+                }
 
+                Dimension dim = dims.get(fromPosition);
+                for (String value : dim.getValues()) {
+                        stack.push(new CombinationValue(dim.getId(), dim
+                                        .getName(), value));
+                        if (!combine(dims, fromPosition + 1, stack, resultList,
+                                        maxCombinationLimit)) {
+                                return false;
+                        }
+                        if (fromPosition == dims.size() - 1) {
+                                resultList.add(new Combination(
+                                                new ArrayList<CombinationValue>(
+                                                                stack)));
+                                if (maxCombinationLimit > 0
+                                                && resultList.size() >= maxCombinationLimit) {
+                                        return false;
+                                }
+                        }
+                        stack.pop();
+                }
+
+                return true;
+        }
 }
