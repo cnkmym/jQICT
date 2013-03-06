@@ -14,27 +14,91 @@ public class CombinationCreator {
                 super();
                 random = new Random();
                 this.allPairList = pairs;
-                this.pairUsed = pairs.copyPairUsed();
         }
 
         public Combination create() {
                 Pair newPair = this.allPairList.nextUnusedPair();
+                if (newPair == null) {
+                        return null;
+                }
+                this.pairUsed = this.allPairList.copyPairUsed();
                 int[] order = shuffleParameterOrders(
                                 this.allPairList.getParameterCount(), newPair);
-                candidate = findCandidateCombinationByOrder(order);
-                if (!candidate.equals(null)) {
-                        updatePairUsage();
-                }
+                findCandidateCombinationByOrder(order, newPair);
+                updatePairUsage();
                 return candidate;
         }
 
-        private Combination findCandidateCombinationByOrder(int[] order) {
-                // FIXME
-                return null;
+        private void useParameterValuePair(int pairIndex) {
+                Pair newPair = this.allPairList.getAvailablePairs()[pairIndex];
+                Long param1Id = this.allPairList
+                                .getParameterIdByValueIndex(newPair
+                                                .getParam1ValueIndex());
+                if (!candidate.getMap().containsKey(param1Id)) {
+                        candidate.getMap()
+                                        .put(param1Id,
+                                                        this.allPairList.getParameterValuePairByValueIndex(newPair
+                                                                        .getParam1ValueIndex()));
+                }
+
+                Long param2Id = this.allPairList
+                                .getParameterIdByValueIndex(newPair
+                                                .getParam2ValueIndex());
+                if (!candidate.getMap().containsKey(param2Id)) {
+                        candidate.getMap()
+                                        .put(param2Id,
+                                                        this.allPairList.getParameterValuePairByValueIndex(newPair
+                                                                        .getParam2ValueIndex()));
+                }
+
+                this.pairUsed[pairIndex] = true;
+        }
+
+        private int findBestValueIndex(int[] candidateIndexes) {
+                int currentIndex = -1;
+                int count = 0;
+                int bestCount = -1;
+                for (int i = 0; i < candidateIndexes.length; i++) {
+                        count = 0;
+                        Integer[] indices = this.allPairList
+                                        .getPairIndexesByValueIndex(candidateIndexes[i]);
+                        for (Integer index : indices) {
+                                if (!this.pairUsed[index]) {
+                                        count++;
+                                }
+                        }
+                        if (count > bestCount) {
+                                currentIndex = i;
+                                bestCount = count;
+                        }
+                }
+                return currentIndex;
+        }
+
+        private void findCandidateCombinationByOrder(int[] order, Pair fixedPair) {
+                this.candidate = new Combination();
+                useParameterValuePair(fixedPair.getPairIndex());
+
+                for (int i = 2; i < order.length; i++) {
+                        int paramIndex = order[i];
+                        int[] valueIndexes = this.allPairList
+                                        .getValueIndexByParameterIndex(paramIndex);
+                        int bestValueIndex = findBestValueIndex(valueIndexes);
+                        Integer[] indices = this.allPairList
+                                        .getPairIndexesByValueIndex(bestValueIndex);
+
+                        for (Integer index : indices) {
+                                useParameterValuePair(index);
+                        }
+                }
         }
 
         private void updatePairUsage() {
-                // FIXME
+                for (int i = 0; i < pairUsed.length; i++) {
+                        if (pairUsed[i]) {
+                                this.allPairList.usePair(i);
+                        }
+                }
         }
 
         private void swap(int[] list, int pos1, int pos2) {

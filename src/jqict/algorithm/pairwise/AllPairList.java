@@ -1,5 +1,6 @@
 package jqict.algorithm.pairwise;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +89,10 @@ public class AllPairList {
                 return Arrays.copyOf(pairUsed, pairCount);
         }
 
+        public Long getParameterIdByValueIndex(int valueIndex) {
+                return parameterIds[valueIndex];
+        }
+
         public int getParameterIndexByValueIndex(int valueIndex) {
                 return parameterValuePositions[valueIndex];
         }
@@ -99,6 +104,17 @@ public class AllPairList {
                                         parameterValues[index]);
                 }
                 return null;
+        }
+
+        public Integer[] getPairIndexesByValueIndex(int valueIndex) {
+                List<Integer> pairIndexes = new ArrayList<Integer>();
+                for (Pair pair : availablePairs) {
+                        if (pair.getParam1ValueIndex() == valueIndex
+                                        || pair.getParam2ValueIndex() == valueIndex) {
+                                pairIndexes.add(pair.getPairIndex());
+                        }
+                }
+                return pairIndexes.toArray(new Integer[pairIndexes.size()]);
         }
 
         // private Long getParameterIdByValueIndex(int index) {

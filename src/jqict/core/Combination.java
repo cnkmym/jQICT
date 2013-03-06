@@ -14,8 +14,14 @@ public class Combination {
                 super();
                 this.map = new TreeMap<Long, ParameterValuePair>();
                 for (ParameterValuePair combinationValue : combinationValues) {
-                        this.map.put(combinationValue.getParameterId(), combinationValue);
+                        this.map.put(combinationValue.getParameterId(),
+                                        combinationValue);
                 }
+        }
+
+        public Combination() {
+                super();
+                this.map = new TreeMap<Long, ParameterValuePair>();
         }
 
         public Map<Long, ParameterValuePair> getMap() {
