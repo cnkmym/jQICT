@@ -8,21 +8,21 @@ public class Combination {
         /**
          * Map<CombinationValue.id, CombinationValue>
          */
-        private final Map<Long, CombinationValue> map;
+        private final Map<Long, ParameterValuePair> map;
 
-        public Combination(List<CombinationValue> combinationValues) {
+        public Combination(List<ParameterValuePair> combinationValues) {
                 super();
-                this.map = new TreeMap<Long, CombinationValue>();
-                for (CombinationValue combinationValue : combinationValues) {
-                        this.map.put(combinationValue.getId(), combinationValue);
+                this.map = new TreeMap<Long, ParameterValuePair>();
+                for (ParameterValuePair combinationValue : combinationValues) {
+                        this.map.put(combinationValue.getParameterId(), combinationValue);
                 }
         }
 
-        public Map<Long, CombinationValue> getMap() {
+        public Map<Long, ParameterValuePair> getMap() {
                 return map;
         }
 
-        public CombinationValue get(Long id) {
+        public ParameterValuePair get(Long id) {
                 if (this.map.containsKey(id)) {
                         return this.map.get(id);
                 } else {
@@ -35,7 +35,7 @@ public class Combination {
                 StringBuilder sb = new StringBuilder();
                 sb.append("[");
                 String delim = "";
-                for (CombinationValue cbv : map.values()) {
+                for (ParameterValuePair cbv : map.values()) {
                         sb.append(delim);
                         sb.append(cbv.toString());
                         delim = ",";

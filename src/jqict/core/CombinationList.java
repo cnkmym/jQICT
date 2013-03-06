@@ -2,10 +2,10 @@ package jqict.core;
 
 import java.util.List;
 
-public class CombinationTable {
+public class CombinationList {
         private final List<Combination> combinations;
 
-        public CombinationTable(List<Combination> combinations) {
+        public CombinationList(List<Combination> combinations) {
                 super();
                 this.combinations = combinations;
         }
@@ -47,7 +47,7 @@ public class CombinationTable {
                         return false;
                 if (getClass() != obj.getClass())
                         return false;
-                CombinationTable other = (CombinationTable) obj;
+                CombinationList other = (CombinationList) obj;
                 if (combinations == null) {
                         if (other.combinations != null)
                                 return false;

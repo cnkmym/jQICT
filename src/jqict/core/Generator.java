@@ -8,9 +8,9 @@ public class Generator {
                 this.algorithm = algorithm;
         }
 
-        public CombinationTable generate(DimensionTable domain,
+        public CombinationList generate(ParameterList parameters,
                         int maxCombinationLimit) {
-                return algorithm.generate(domain, maxCombinationLimit);
+                return algorithm.generate(parameters, maxCombinationLimit);
         }
 
 }

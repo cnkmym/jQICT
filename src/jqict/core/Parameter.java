@@ -2,12 +2,12 @@ package jqict.core;
 
 import java.util.List;
 
-public class Dimension {
+public class Parameter {
         private final Long id;
         private final String name;
         private final List<String> values;
 
-        public Dimension(Long id, String name, List<String> values) {
+        public Parameter(Long id, String name, List<String> values) {
                 super();
                 this.id = id;
                 this.name = name;
@@ -46,7 +46,7 @@ public class Dimension {
                         return false;
                 if (getClass() != obj.getClass())
                         return false;
-                Dimension other = (Dimension) obj;
+                Parameter other = (Parameter) obj;
                 if (id == null) {
                         if (other.id != null)
                                 return false;

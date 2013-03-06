@@ -2,24 +2,24 @@ package jqict.core;
 
 import java.util.List;
 
-public class DimensionTable {
+public class ParameterList {
 
-        private final List<Dimension> dimensions;
+        private final List<Parameter> parameters;
         private final int size;
 
-        public DimensionTable(List<Dimension> dimensions) {
+        public ParameterList(List<Parameter> params) {
                 super();
-                this.dimensions = dimensions;
+                this.parameters = params;
                 int size = 1;
-                for (Dimension dimension : dimensions) {
+                for (Parameter dimension : params) {
                         size = size * dimension.getValues().size();
                 }
                 this.size = size;
 
         }
 
-        public List<Dimension> getDimensions() {
-                return dimensions;
+        public List<Parameter> getParameters() {
+                return parameters;
         }
 
         public int getSize() {
@@ -33,7 +33,7 @@ public class DimensionTable {
          * @return
          */
         public String getValue(int dimensionIndex, int dimensionValueIndex) {
-                return dimensions.get(dimensionIndex).getValues().get(dimensionValueIndex);
+                return parameters.get(dimensionIndex).getValues().get(dimensionValueIndex);
         }
 
         @Override
@@ -42,7 +42,7 @@ public class DimensionTable {
                 int result = 1;
                 result = prime
                                 * result
-                                + ((dimensions == null) ? 0 : dimensions
+                                + ((parameters == null) ? 0 : parameters
                                                 .hashCode());
                 return result;
         }
@@ -55,11 +55,11 @@ public class DimensionTable {
                         return false;
                 if (getClass() != obj.getClass())
                         return false;
-                DimensionTable other = (DimensionTable) obj;
-                if (dimensions == null) {
-                        if (other.dimensions != null)
+                ParameterList other = (ParameterList) obj;
+                if (parameters == null) {
+                        if (other.parameters != null)
                                 return false;
-                } else if (!dimensions.equals(other.dimensions))
+                } else if (!parameters.equals(other.parameters))
                         return false;
                 return true;
         }

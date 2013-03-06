@@ -23,7 +23,7 @@ public class Main {
          for (List<FactorValue> pattern : patterns) {
          System.out.print(index++ + ": ");
          for (FactorValue value : pattern) {
-         System.out.print(value.getValue() + " ");
+         System.out.print(value.getParameterValue() + " ");
          }
          System.out.println();
          }

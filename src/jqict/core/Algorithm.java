@@ -3,10 +3,10 @@ package jqict.core;
 public interface Algorithm {
         /**
          * 
-         * @param domain
-         * @param maxPatternLimit -1 means no up limit
+         * @param parameters
+         * @param maxCombinationLimit -1 means no up limit
          * @return
          */
-        public CombinationTable generate(DimensionTable domain, int maxPatternLimit);
+        public CombinationList generate(ParameterList parameters, int maxCombinationLimit);
 
 }

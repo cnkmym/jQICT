@@ -1,47 +1,33 @@
 package jqict.algorithm.pairwise;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 import jqict.core.Algorithm;
 import jqict.core.Combination;
-import jqict.core.CombinationTable;
-import jqict.core.CombinationValue;
-import jqict.core.Dimension;
-import jqict.core.DimensionTable;
+import jqict.core.CombinationList;
+import jqict.core.ParameterList;
 
 public class PairWiseAlgorithm implements Algorithm {
+        private List<Combination> combinations;
+        private byte[][] allPairUsageMap;
+        private List<Combination> candidates;
 
         @Override
-        public CombinationTable generate(DimensionTable domain, int maxCombinationLimit) {
-
-                Deque<CombinationValue> stack = new ArrayDeque<CombinationValue>();
-                List<Combination> combinations = new ArrayList<Combination>();
-                combine(domain.getDimensions(), 0, stack, combinations);
-
-                return new CombinationTable(combinations);
+        public CombinationList generate(ParameterList parameters,
+                        int maxCombinationLimit) {
+                initializeAllPairs();
+                computeCombinations();
+                return new CombinationList(combinations);
         }
 
-        private void combine(List<Dimension> dims, int pos,
-                        Deque<CombinationValue> stack,
-                        List<Combination> combinations) {
+        private void initializeAllPairs() {
+                combinations = new ArrayList<Combination>();
 
-                if (!(pos < dims.size()))
-                        return;
+        }
 
-                Dimension dim = dims.get(pos);
-                for (String value : dim.getValues()) {
-                        stack.push(new CombinationValue(dim.getName(), value));
-                        combine(dims, pos + 1, stack, combinations);
-                        if (pos == dims.size() - 1) {
-                                combinations.add(new Combination(
-                                                new ArrayList<CombinationValue>(
-                                                                stack)));
-                        }
-                        stack.pop();
-                }
+        private void computeCombinations() {
+
         }
 
 }
