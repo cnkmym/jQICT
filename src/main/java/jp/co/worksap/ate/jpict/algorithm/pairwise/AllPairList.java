@@ -1,4 +1,4 @@
-package jqict.algorithm.pairwise;
+package jp.co.worksap.ate.jpict.algorithm.pairwise;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jqict.core.Parameter;
-import jqict.core.ParameterList;
-import jqict.core.ParameterValuePair;
+import jp.co.worksap.ate.jpict.core.Parameter;
+import jp.co.worksap.ate.jpict.core.ParameterList;
+import jp.co.worksap.ate.jpict.core.ParameterValuePair;
 
 public class AllPairList {
 	private Pair[] availablePairs;

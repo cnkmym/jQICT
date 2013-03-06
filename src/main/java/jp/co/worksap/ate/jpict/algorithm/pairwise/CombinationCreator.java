@@ -1,11 +1,11 @@
-package jqict.algorithm.pairwise;
+package jp.co.worksap.ate.jpict.algorithm.pairwise;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
-import jqict.core.Combination;
-import jqict.core.ParameterValuePair;
+import jp.co.worksap.ate.jpict.core.Combination;
+import jp.co.worksap.ate.jpict.core.ParameterValuePair;
 
 public class CombinationCreator {
 	private AllPairList allPairList;

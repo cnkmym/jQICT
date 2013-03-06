@@ -1,16 +1,16 @@
-package jqict.algorithm.fullcombination;
+package jp.co.worksap.ate.jpict.algorithm.fullcombination;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import jqict.core.Algorithm;
-import jqict.core.Combination;
-import jqict.core.CombinationList;
-import jqict.core.Parameter;
-import jqict.core.ParameterList;
-import jqict.core.ParameterValuePair;
+import jp.co.worksap.ate.jpict.core.Algorithm;
+import jp.co.worksap.ate.jpict.core.Combination;
+import jp.co.worksap.ate.jpict.core.CombinationList;
+import jp.co.worksap.ate.jpict.core.Parameter;
+import jp.co.worksap.ate.jpict.core.ParameterList;
+import jp.co.worksap.ate.jpict.core.ParameterValuePair;
 
 public class FullCombinationAlgorithm implements Algorithm {
 

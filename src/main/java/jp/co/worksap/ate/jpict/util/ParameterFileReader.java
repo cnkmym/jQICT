@@ -1,4 +1,4 @@
-package jqict.util;
+package jp.co.worksap.ate.jpict.util;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,8 +7,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import jqict.core.Parameter;
-import jqict.core.ParameterList;
+import jp.co.worksap.ate.jpict.core.Parameter;
+import jp.co.worksap.ate.jpict.core.ParameterList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;

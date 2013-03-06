@@ -1,12 +1,12 @@
-package jqict.algorithm.pairwise;
+package jp.co.worksap.ate.jpict.algorithm.pairwise;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jqict.core.Algorithm;
-import jqict.core.Combination;
-import jqict.core.CombinationList;
-import jqict.core.ParameterList;
+import jp.co.worksap.ate.jpict.core.Algorithm;
+import jp.co.worksap.ate.jpict.core.Combination;
+import jp.co.worksap.ate.jpict.core.CombinationList;
+import jp.co.worksap.ate.jpict.core.ParameterList;
 
 public class PairWiseAlgorithm implements Algorithm {
 	private List<Combination> combinations;

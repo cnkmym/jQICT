@@ -1,4 +1,4 @@
-package jqict.core;
+package jp.co.worksap.ate.jpict.core;
 
 public class Generator {
 

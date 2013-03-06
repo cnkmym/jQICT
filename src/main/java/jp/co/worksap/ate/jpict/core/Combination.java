@@ -1,4 +1,4 @@
-package jqict.core;
+package jp.co.worksap.ate.jpict.core;
 
 import java.util.List;
 import java.util.Map;

@@ -1,15 +1,16 @@
-package jqict.algorithm.fullcombination;
+package jp.co.worksap.ate.jpict.algorithm.fullcombination;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jqict.core.Algorithm;
-import jqict.core.CombinationList;
-import jqict.core.Parameter;
-import jqict.core.ParameterList;
-import jqict.util.ParameterFileReader;
+import jp.co.worksap.ate.jpict.algorithm.fullcombination.FullCombinationAlgorithm;
+import jp.co.worksap.ate.jpict.core.Algorithm;
+import jp.co.worksap.ate.jpict.core.CombinationList;
+import jp.co.worksap.ate.jpict.core.Parameter;
+import jp.co.worksap.ate.jpict.core.ParameterList;
+import jp.co.worksap.ate.jpict.util.ParameterFileReader;
 import junit.framework.TestCase;
 
 import org.junit.Test;

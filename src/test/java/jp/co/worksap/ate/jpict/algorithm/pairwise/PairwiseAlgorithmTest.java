@@ -1,4 +1,4 @@
-package jqict.algorithm.pairwise;
+package jp.co.worksap.ate.jpict.algorithm.pairwise;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,14 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import jqict.algorithm.fullcombination.FullCombinationAlgorithm;
-import jqict.core.Algorithm;
-import jqict.core.Combination;
-import jqict.core.CombinationList;
-import jqict.core.Parameter;
-import jqict.core.ParameterList;
-import jqict.core.ParameterValuePair;
-import jqict.util.ParameterFileReader;
+import jp.co.worksap.ate.jpict.core.Algorithm;
+import jp.co.worksap.ate.jpict.core.Combination;
+import jp.co.worksap.ate.jpict.core.CombinationList;
+import jp.co.worksap.ate.jpict.core.Parameter;
+import jp.co.worksap.ate.jpict.core.ParameterList;
+import jp.co.worksap.ate.jpict.core.ParameterValuePair;
+import jp.co.worksap.ate.jpict.util.ParameterFileReader;
 import junit.framework.TestCase;
 
 import org.junit.Test;

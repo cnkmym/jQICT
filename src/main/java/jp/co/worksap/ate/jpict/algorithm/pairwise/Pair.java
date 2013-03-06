@@ -1,4 +1,4 @@
-package jqict.algorithm.pairwise;
+package jp.co.worksap.ate.jpict.algorithm.pairwise;
 
 public class Pair {
 	private int param1ValueIndex;
