@@ -14,54 +14,55 @@ import jp.co.worksap.ate.jpict.core.ParameterValuePair;
 
 public class FullCombinationAlgorithm implements Algorithm {
 
-	@Override
-	public CombinationList generate(ParameterList parameters,
-			int maxCombinationLimit) {
+        public CombinationList generate(ParameterList parameters,
+                        int maxCombinationLimit) {
 
-		Deque<ParameterValuePair> stack = new ArrayDeque<ParameterValuePair>();
-		List<Combination> resultList = new ArrayList<Combination>();
-		if (maxCombinationLimit != 0) {
-			combine(parameters.getParameters(), 0, stack, resultList,
-					maxCombinationLimit);
-		}
+                Deque<ParameterValuePair> stack = new ArrayDeque<ParameterValuePair>();
+                List<Combination> resultList = new ArrayList<Combination>();
+                if (maxCombinationLimit != 0) {
+                        combine(parameters.getParameters(), 0, stack,
+                                        resultList, maxCombinationLimit);
+                }
 
-		return new CombinationList(resultList);
-	}
+                return new CombinationList(resultList);
+        }
 
-	/**
-	 * 
-	 * @param params
-	 * @param fromPosition
-	 * @param stack
-	 * @param resultList
-	 * @param maxCombinationLimit
-	 */
-	private boolean combine(List<Parameter> params, int fromPosition,
-			Deque<ParameterValuePair> stack, List<Combination> resultList,
-			int maxCombinationLimit) {
+        /**
+         * 
+         * @param params
+         * @param fromPosition
+         * @param stack
+         * @param resultList
+         * @param maxCombinationLimit
+         */
+        private boolean combine(List<Parameter> params, int fromPosition,
+                        Deque<ParameterValuePair> stack,
+                        List<Combination> resultList, int maxCombinationLimit) {
 
-		if (fromPosition >= params.size()) {
-			return true;
-		}
+                if (fromPosition >= params.size()) {
+                        return true;
+                }
 
-		Parameter dim = params.get(fromPosition);
-		for (String value : dim.getValues()) {
-			stack.push(new ParameterValuePair(dim.getId(), dim.getName(), value));
-			if (!combine(params, fromPosition + 1, stack, resultList,
-					maxCombinationLimit)) {
-				return false;
-			}
-			if (fromPosition == params.size() - 1) {
-				resultList.add(new Combination(
-						new ArrayList<ParameterValuePair>(stack)));
-				if (maxCombinationLimit > 0
-						&& resultList.size() >= maxCombinationLimit) {
-					return false;
-				}
-			}
-			stack.pop();
-		}
+                Parameter dim = params.get(fromPosition);
+                for (String value : dim.getValues()) {
+                        stack.push(new ParameterValuePair(dim.getId(), dim
+                                        .getName(), value));
+                        if (!combine(params, fromPosition + 1, stack,
+                                        resultList, maxCombinationLimit)) {
+                                return false;
+                        }
+                        if (fromPosition == params.size() - 1) {
+                                resultList.add(new Combination(
+                                                new ArrayList<ParameterValuePair>(
+                                                                stack)));
+                                if (maxCombinationLimit > 0
+                                                && resultList.size() >= maxCombinationLimit) {
+                                        return false;
+                                }
+                        }
+                        stack.pop();
+                }
 
-		return true;
-	}
+                return true;
+        }
 }
