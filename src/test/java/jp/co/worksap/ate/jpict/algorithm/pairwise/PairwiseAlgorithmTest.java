@@ -3,16 +3,13 @@ package jp.co.worksap.ate.jpict.algorithm.pairwise;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import jp.co.worksap.ate.jpict.core.Algorithm;
-import jp.co.worksap.ate.jpict.core.Combination;
 import jp.co.worksap.ate.jpict.core.CombinationList;
 import jp.co.worksap.ate.jpict.core.Parameter;
 import jp.co.worksap.ate.jpict.core.ParameterList;
-import jp.co.worksap.ate.jpict.core.ParameterValuePair;
+import jp.co.worksap.ate.jpict.testutil.PairComparator;
 import jp.co.worksap.ate.jpict.testutil.ParameterFileReader;
 import junit.framework.TestCase;
 
@@ -21,31 +18,6 @@ import org.junit.Test;
 import com.google.gson.JsonSyntaxException;
 
 public class PairwiseAlgorithmTest extends TestCase {
-
-        private boolean checkAllPairCovered(ParameterList parameters,
-                        CombinationList combinations) {
-                AllPairList allPairs = new AllPairList(parameters);
-                Set<Pair> usedPairs = new HashSet<Pair>();
-                for (Combination combination : combinations.getCombinations()) {
-                        Set<Long> keys = combination.getMap().keySet();
-                        Long[] keyArray = keys.toArray(new Long[keys.size()]);
-                        for (int i = 0; i < keyArray.length - 1; i++) {
-                                ParameterValuePair value1 = combination
-                                                .get(keyArray[i]);
-                                int valueIndex1 = allPairs
-                                                .getValueIndexByParameterValuePair(value1);
-                                for (int j = i + 1; j < keyArray.length; j++) {
-                                        ParameterValuePair value2 = combination
-                                                        .get(keyArray[j]);
-                                        int valueIndex2 = allPairs
-                                                        .getValueIndexByParameterValuePair(value2);
-                                        usedPairs.add(new Pair(0, valueIndex1,
-                                                        valueIndex2));
-                                }
-                        }
-                }
-                return allPairs.getPairCount() == usedPairs.size();
-        }
 
         @Test
         public void test0() {
@@ -59,20 +31,206 @@ public class PairwiseAlgorithmTest extends TestCase {
                 CombinationList combinations = target.generate(parameterList,
                                 -1);
 
-                assertEquals(0, combinations.getCombinations().size());
-                // assertTrue(checkAllPairCovered(parameterList, combinations));
-
-                // String ret = "[";
-                // ret += "[{id:1,name:hoge1,value:T}],";
-                // ret += "[{id:1,name:hoge1,value:F}]";
-                // ret += "]";
-                //
-                // System.out.println(combinations.toString());
+                // if there is no pair, there should be no combination
+                int expectedPairs = 0;
+                assertEquals(expectedPairs, combinations.getCombinations()
+                                .size());
 
         }
 
         @Test
         public void test1() {
+                Algorithm target = new PairWiseAlgorithm();
+
+                List<Parameter> parameters = new ArrayList<Parameter>();
+                parameters.add(new Parameter(1L, "param1", Arrays
+                                .asList(new String[] { "A", "B" })));
+                parameters.add(new Parameter(2L, "param2", Arrays
+                                .asList(new String[] { "C" })));
+
+                ParameterList parameterList = new ParameterList(parameters);
+                CombinationList combinations = target.generate(parameterList,
+                                -1);
+
+                // if there is 2 pair
+                int expectedPairs = 2;
+
+                List<OnePair> allPairs = new ArrayList<OnePair>(expectedPairs) {
+                        private static final long serialVersionUID = 1L;
+
+                        {
+                                add(new OnePair(1L, "A", 2L, "C"));
+                                add(new OnePair(1L, "B", 2L, "C"));
+                        }
+                };
+                assertTrue(PairComparator.hasAllPairs(allPairs, combinations));
+        }
+
+        @Test
+        public void test2() {
+                Algorithm target = new PairWiseAlgorithm();
+
+                List<Parameter> parameters = new ArrayList<Parameter>();
+                parameters.add(new Parameter(1L, "param1", Arrays
+                                .asList(new String[] { "A" })));
+                parameters.add(new Parameter(2L, "param2", Arrays
+                                .asList(new String[] { "C", "D" })));
+
+                ParameterList parameterList = new ParameterList(parameters);
+                CombinationList combinations = target.generate(parameterList,
+                                -1);
+
+                // if there is 2 pair
+                int expectedPairs = 2;
+
+                List<OnePair> allPairs = new ArrayList<OnePair>(expectedPairs) {
+                        private static final long serialVersionUID = 1L;
+
+                        {
+                                add(new OnePair(1L, "A", 2L, "C"));
+                                add(new OnePair(1L, "A", 2L, "D"));
+                        }
+                };
+                assertTrue(PairComparator.hasAllPairs(allPairs, combinations));
+
+        }
+
+        @Test
+        public void test3() {
+                Algorithm target = new PairWiseAlgorithm();
+
+                List<Parameter> parameters = new ArrayList<Parameter>();
+                parameters.add(new Parameter(1L, "param1", Arrays
+                                .asList(new String[] { "A", "B" })));
+                parameters.add(new Parameter(2L, "param2", Arrays
+                                .asList(new String[] { "C", "D" })));
+
+                ParameterList parameterList = new ParameterList(parameters);
+                CombinationList combinations = target.generate(parameterList,
+                                -1);
+
+                // if there is 2 pair
+                int expectedPairs = 4;
+
+                List<OnePair> allPairs = new ArrayList<OnePair>(expectedPairs) {
+                        private static final long serialVersionUID = 1L;
+
+                        {
+                                add(new OnePair(1L, "A", 2L, "C"));
+                                add(new OnePair(1L, "A", 2L, "D"));
+                                add(new OnePair(1L, "B", 2L, "C"));
+                                add(new OnePair(1L, "B", 2L, "D"));
+                        }
+                };
+                assertTrue(PairComparator.hasAllPairs(allPairs, combinations));
+        }
+
+        @Test
+        public void test4() {
+                Algorithm target = new PairWiseAlgorithm();
+
+                List<Parameter> parameters = new ArrayList<Parameter>();
+                parameters.add(new Parameter(1L, "param1", Arrays
+                                .asList(new String[] { "A", "B" })));
+                parameters.add(new Parameter(2L, "param2", Arrays
+                                .asList(new String[] { "C", "D", "E" })));
+
+                ParameterList parameterList = new ParameterList(parameters);
+                CombinationList combinations = target.generate(parameterList,
+                                -1);
+
+                // if there is 6 pair
+                int expectedPairs = 6;
+
+                List<OnePair> allPairs = new ArrayList<OnePair>(expectedPairs) {
+                        private static final long serialVersionUID = 1L;
+
+                        {
+                                add(new OnePair(1L, "A", 2L, "C"));
+                                add(new OnePair(1L, "A", 2L, "D"));
+                                add(new OnePair(1L, "A", 2L, "E"));
+                                add(new OnePair(1L, "B", 2L, "C"));
+                                add(new OnePair(1L, "B", 2L, "D"));
+                                add(new OnePair(1L, "B", 2L, "E"));
+                        }
+                };
+                assertTrue(PairComparator.hasAllPairs(allPairs, combinations));
+        }
+
+        @Test
+        public void test5() {
+                Algorithm target = new PairWiseAlgorithm();
+
+                List<Parameter> parameters = new ArrayList<Parameter>();
+                parameters.add(new Parameter(1L, "param1", Arrays
+                                .asList(new String[] { "1", "2", "3" })));
+                parameters.add(new Parameter(2L, "param2", Arrays
+                                .asList(new String[] { "C", "D" })));
+
+                ParameterList parameterList = new ParameterList(parameters);
+                CombinationList combinations = target.generate(parameterList,
+                                -1);
+
+                // if there is 6 pair
+                int expectedPairs = 6;
+
+                List<OnePair> allPairs = new ArrayList<OnePair>(expectedPairs) {
+                        private static final long serialVersionUID = 1L;
+
+                        {
+                                add(new OnePair(1L, "1", 2L, "C"));
+                                add(new OnePair(1L, "1", 2L, "D"));
+                                add(new OnePair(1L, "2", 2L, "C"));
+                                add(new OnePair(1L, "2", 2L, "D"));
+                                add(new OnePair(1L, "3", 2L, "C"));
+                                add(new OnePair(1L, "3", 2L, "D"));
+                        }
+                };
+                assertTrue(PairComparator.hasAllPairs(allPairs, combinations));
+        }
+
+        @Test
+        public void test6() {
+                Algorithm target = new PairWiseAlgorithm();
+
+                List<Parameter> parameters = new ArrayList<Parameter>();
+                parameters.add(new Parameter(1L, "param1", Arrays
+                                .asList(new String[] { "1", "2", "3" })));
+                parameters.add(new Parameter(2L, "param2", Arrays
+                                .asList(new String[] { "C" })));
+                parameters.add(new Parameter(3L, "param2", Arrays
+                                .asList(new String[] { "x", "y" })));
+
+                ParameterList parameterList = new ParameterList(parameters);
+                CombinationList combinations = target.generate(parameterList,
+                                -1);
+
+                // if there is 11 pairs
+                // 3*(1+2) + 1*2 = 11
+                int expectedPairs = 11;
+
+                List<OnePair> allPairs = new ArrayList<OnePair>(expectedPairs) {
+                        private static final long serialVersionUID = 1L;
+
+                        {
+                                add(new OnePair(1L, "1", 2L, "C"));
+                                add(new OnePair(1L, "1", 3L, "x"));
+                                add(new OnePair(1L, "1", 3L, "y"));
+                                add(new OnePair(1L, "2", 2L, "C"));
+                                add(new OnePair(1L, "2", 3L, "x"));
+                                add(new OnePair(1L, "2", 3L, "y"));
+                                add(new OnePair(1L, "3", 2L, "C"));
+                                add(new OnePair(1L, "3", 3L, "x"));
+                                add(new OnePair(1L, "3", 3L, "y"));
+                                add(new OnePair(2L, "C", 3L, "x"));
+                                add(new OnePair(2L, "C", 3L, "y"));
+                        }
+                };
+                assertTrue(PairComparator.hasAllPairs(allPairs, combinations));
+        }
+
+        @Test
+        public void test7() {
                 Algorithm target = new PairWiseAlgorithm();
 
                 List<Parameter> parameters = new ArrayList<Parameter>();
@@ -91,144 +249,98 @@ public class PairwiseAlgorithmTest extends TestCase {
                 CombinationList combinations = target.generate(parameterList,
                                 -1);
 
-                assertTrue(checkAllPairCovered(parameterList, combinations));
-                // String ret = "[";
-                // ret +=
-                // "[{id:1,name:hoge1,value:T},{id:2,name:hoge2,value:0}],";
-                // ret +=
-                // "[{id:1,name:hoge1,value:T},{id:2,name:hoge2,value:1}],";
-                // ret +=
-                // "[{id:1,name:hoge1,value:F},{id:2,name:hoge2,value:0}],";
-                // ret +=
-                // "[{id:1,name:hoge1,value:F},{id:2,name:hoge2,value:1}]";
-                // ret += "]";
+                // if there is 66 pair : 
+                // 2*(4 + 2+3+2) + 4*(2+3+2) + 2*(3+2) + 3*2 = 66
+                int expectedPairs = 66;
 
-                // assertEquals(ret, ct.toString());
-                System.out.println(combinations.toString());
+                List<OnePair> allPairs = new ArrayList<OnePair>(expectedPairs) {
+                        private static final long serialVersionUID = 1L;
 
-        }
+                        {
+                                // pairs starting with parameter 1
+                                add(new OnePair(0L, "a", 1L, "c"));
+                                add(new OnePair(0L, "a", 1L, "d"));
+                                add(new OnePair(0L, "a", 1L, "e"));
+                                add(new OnePair(0L, "a", 1L, "f"));
+                                add(new OnePair(0L, "a", 2L, "01"));
+                                add(new OnePair(0L, "a", 2L, "001"));
+                                add(new OnePair(0L, "a", 3L, "g"));
+                                add(new OnePair(0L, "a", 3L, "h"));
+                                add(new OnePair(0L, "a", 3L, "i"));
+                                add(new OnePair(0L, "a", 4L, "j"));
+                                add(new OnePair(0L, "a", 4L, "k"));
 
-        @Test
-        public void test2() {
-                Algorithm target = new PairWiseAlgorithm();
+                                add(new OnePair(0L, "b", 1L, "c"));
+                                add(new OnePair(0L, "b", 1L, "d"));
+                                add(new OnePair(0L, "b", 1L, "e"));
+                                add(new OnePair(0L, "b", 1L, "f"));
+                                add(new OnePair(0L, "b", 2L, "01"));
+                                add(new OnePair(0L, "b", 2L, "001"));
+                                add(new OnePair(0L, "b", 3L, "g"));
+                                add(new OnePair(0L, "b", 3L, "h"));
+                                add(new OnePair(0L, "b", 3L, "i"));
+                                add(new OnePair(0L, "b", 4L, "j"));
+                                add(new OnePair(0L, "b", 4L, "k"));
 
-                List<Parameter> parameters = new ArrayList<Parameter>();
-                parameters.add(new Parameter(3L, "hoge1", Arrays
-                                .asList(new String[] { "T" })));
-                parameters.add(new Parameter(4L, "hoge2", Arrays
-                                .asList(new String[] { "0", "1" })));
+                                // pairs starting with parameter 2
+                                add(new OnePair(1L, "c", 2L, "01"));
+                                add(new OnePair(1L, "c", 2L, "001"));
+                                add(new OnePair(1L, "c", 3L, "g"));
+                                add(new OnePair(1L, "c", 3L, "h"));
+                                add(new OnePair(1L, "c", 3L, "i"));
+                                add(new OnePair(1L, "c", 4L, "j"));
+                                add(new OnePair(1L, "c", 4L, "k"));
 
-                ParameterList parameterList = new ParameterList(parameters);
-                CombinationList combinations = target.generate(parameterList,
-                                -1);
+                                add(new OnePair(1L, "d", 2L, "01"));
+                                add(new OnePair(1L, "d", 2L, "001"));
+                                add(new OnePair(1L, "d", 3L, "g"));
+                                add(new OnePair(1L, "d", 3L, "h"));
+                                add(new OnePair(1L, "d", 3L, "i"));
+                                add(new OnePair(1L, "d", 4L, "j"));
+                                add(new OnePair(1L, "d", 4L, "k"));
 
-                assertTrue(checkAllPairCovered(parameterList, combinations));
+                                add(new OnePair(1L, "e", 2L, "01"));
+                                add(new OnePair(1L, "e", 2L, "001"));
+                                add(new OnePair(1L, "e", 3L, "g"));
+                                add(new OnePair(1L, "e", 3L, "h"));
+                                add(new OnePair(1L, "e", 3L, "i"));
+                                add(new OnePair(1L, "e", 4L, "j"));
+                                add(new OnePair(1L, "e", 4L, "k"));
 
-                // String ret = "[";
-                // ret +=
-                // "[{id:3,name:hoge1,value:T},{id:4,name:hoge2,value:0}],";
-                // ret +=
-                // "[{id:3,name:hoge1,value:T},{id:4,name:hoge2,value:1}]";
-                // ret += "]";
+                                add(new OnePair(1L, "f", 2L, "01"));
+                                add(new OnePair(1L, "f", 2L, "001"));
+                                add(new OnePair(1L, "f", 3L, "g"));
+                                add(new OnePair(1L, "f", 3L, "h"));
+                                add(new OnePair(1L, "f", 3L, "i"));
+                                add(new OnePair(1L, "f", 4L, "j"));
+                                add(new OnePair(1L, "f", 4L, "k"));
 
-                System.out.println(combinations.toString());
+                                // pairs starting with parameter 3
+                                add(new OnePair(2L, "01", 3L, "g"));
+                                add(new OnePair(2L, "01", 3L, "h"));
+                                add(new OnePair(2L, "01", 3L, "i"));
+                                add(new OnePair(2L, "01", 4L, "j"));
+                                add(new OnePair(2L, "01", 4L, "k"));
 
-        }
+                                add(new OnePair(2L, "001", 3L, "g"));
+                                add(new OnePair(2L, "001", 3L, "h"));
+                                add(new OnePair(2L, "001", 3L, "i"));
+                                add(new OnePair(2L, "001", 4L, "j"));
+                                add(new OnePair(2L, "001", 4L, "k"));
 
-        @Test
-        public void test3() {
-                Algorithm target = new PairWiseAlgorithm();
+                                // pairs starting with parameter 4
+                                add(new OnePair(3L, "g", 4L, "j"));
+                                add(new OnePair(3L, "g", 4L, "k"));
 
-                List<Parameter> parameters = new ArrayList<Parameter>();
-                parameters.add(new Parameter(1L, "hoge1", Arrays
-                                .asList(new String[] { "T", "F" })));
-                parameters.add(new Parameter(2L, "hoge2", Arrays
-                                .asList(new String[] { "0" })));
+                                add(new OnePair(3L, "h", 4L, "j"));
+                                add(new OnePair(3L, "h", 4L, "k"));
 
-                ParameterList parameterList = new ParameterList(parameters);
-                CombinationList combinations = target.generate(parameterList,
-                                -1);
+                                add(new OnePair(3L, "i", 4L, "j"));
+                                add(new OnePair(3L, "i", 4L, "k"));
 
-                assertTrue(checkAllPairCovered(parameterList, combinations));
-                // String ret = "[";
-                // ret +=
-                // "[{id:1,name:hoge1,value:T},{id:2,name:hoge2,value:0}],";
-                // ret +=
-                // "[{id:1,name:hoge1,value:F},{id:2,name:hoge2,value:0}]";
-                // ret += "]";
-
-                System.out.println(combinations.toString());
-        }
-
-        @Test
-        public void test4() {
-                Algorithm target = new PairWiseAlgorithm();
-
-                List<Parameter> parameters = new ArrayList<Parameter>();
-                parameters.add(new Parameter(1L, "hoge1", Arrays
-                                .asList(new String[] { "T", "F" })));
-                parameters.add(new Parameter(2L, "hoge2", Arrays
-                                .asList(new String[] { "0", "1", "2" })));
-
-                ParameterList parameterList = new ParameterList(parameters);
-                CombinationList combinations = target.generate(parameterList,
-                                -1);
-
-                assertTrue(checkAllPairCovered(parameterList, combinations));
-
-                // String ret = "[";
-                // ret +=
-                // "[{id:1,name:hoge1,value:T},{id:2,name:hoge2,value:0}],";
-                // ret +=
-                // "[{id:1,name:hoge1,value:T},{id:2,name:hoge2,value:1}],";
-                // ret +=
-                // "[{id:1,name:hoge1,value:T},{id:2,name:hoge2,value:2}],";
-                // ret +=
-                // "[{id:1,name:hoge1,value:F},{id:2,name:hoge2,value:0}],";
-                // ret +=
-                // "[{id:1,name:hoge1,value:F},{id:2,name:hoge2,value:1}],";
-                // ret +=
-                // "[{id:1,name:hoge1,value:F},{id:2,name:hoge2,value:2}]";
-                // ret += "]";
-
-                System.out.println(combinations.toString());
-        }
-
-        @Test
-        public void test5() {
-                Algorithm target = new PairWiseAlgorithm();
-
-                List<Parameter> parameters = new ArrayList<Parameter>();
-                parameters.add(new Parameter(1L, "hoge1", Arrays
-                                .asList(new String[] { "T", "F", "G" })));
-                parameters.add(new Parameter(2L, "hoge2", Arrays
-                                .asList(new String[] { "0", "1" })));
-
-                ParameterList parameterList = new ParameterList(parameters);
-                CombinationList combinations = target
-                                .generate(parameterList, 0);
-                String ret = "[]";
-
-                assertEquals(ret, combinations.toString());
-
-        }
-
-        @Test
-        public void test6() {
-                Algorithm target = new PairWiseAlgorithm();
-
-                List<Parameter> parameters = new ArrayList<Parameter>();
-                parameters.add(new Parameter(1L, "hoge1", Arrays
-                                .asList(new String[] { "T", "F", "G" })));
-                parameters.add(new Parameter(2L, "hoge2", Arrays
-                                .asList(new String[] { "0", "1" })));
-
-                ParameterList parameterList = new ParameterList(parameters);
-                CombinationList combinations = target
-                                .generate(parameterList, 5);
-
-                assertEquals(5, combinations.getCombinations().size());
-
+                        }
+                };
+                assertTrue(PairComparator.hasAllPairs(allPairs, combinations));
         }
 
         @Test
@@ -241,11 +353,97 @@ public class PairwiseAlgorithmTest extends TestCase {
                 assertEquals(5, parameters.getParameters().size());
                 CombinationList combinations = target.generate(parameters, -1);
 
-                assertTrue(combinations.getCombinations().size() > 0);
-                assertTrue(combinations.getCombinations().size() < parameters
-                                .getSize());
+                // if there is 66 pair
+                int expectedPairs = 66;
 
-                System.out.println(combinations);
+                List<OnePair> allPairs = new ArrayList<OnePair>(expectedPairs) {
+                        private static final long serialVersionUID = 1L;
+
+                        {
+                                // pairs starting with parameter 1
+                                add(new OnePair(0L, "a", 1L, "c"));
+                                add(new OnePair(0L, "a", 1L, "d"));
+                                add(new OnePair(0L, "a", 1L, "e"));
+                                add(new OnePair(0L, "a", 1L, "f"));
+                                add(new OnePair(0L, "a", 2L, "01"));
+                                add(new OnePair(0L, "a", 2L, "001"));
+                                add(new OnePair(0L, "a", 3L, "g"));
+                                add(new OnePair(0L, "a", 3L, "h"));
+                                add(new OnePair(0L, "a", 3L, "i"));
+                                add(new OnePair(0L, "a", 4L, "j"));
+                                add(new OnePair(0L, "a", 4L, "k"));
+
+                                add(new OnePair(0L, "b", 1L, "c"));
+                                add(new OnePair(0L, "b", 1L, "d"));
+                                add(new OnePair(0L, "b", 1L, "e"));
+                                add(new OnePair(0L, "b", 1L, "f"));
+                                add(new OnePair(0L, "b", 2L, "01"));
+                                add(new OnePair(0L, "b", 2L, "001"));
+                                add(new OnePair(0L, "b", 3L, "g"));
+                                add(new OnePair(0L, "b", 3L, "h"));
+                                add(new OnePair(0L, "b", 3L, "i"));
+                                add(new OnePair(0L, "b", 4L, "j"));
+                                add(new OnePair(0L, "b", 4L, "k"));
+
+                                // pairs starting with parameter 2
+                                add(new OnePair(1L, "c", 2L, "01"));
+                                add(new OnePair(1L, "c", 2L, "001"));
+                                add(new OnePair(1L, "c", 3L, "g"));
+                                add(new OnePair(1L, "c", 3L, "h"));
+                                add(new OnePair(1L, "c", 3L, "i"));
+                                add(new OnePair(1L, "c", 4L, "j"));
+                                add(new OnePair(1L, "c", 4L, "k"));
+
+                                add(new OnePair(1L, "d", 2L, "01"));
+                                add(new OnePair(1L, "d", 2L, "001"));
+                                add(new OnePair(1L, "d", 3L, "g"));
+                                add(new OnePair(1L, "d", 3L, "h"));
+                                add(new OnePair(1L, "d", 3L, "i"));
+                                add(new OnePair(1L, "d", 4L, "j"));
+                                add(new OnePair(1L, "d", 4L, "k"));
+
+                                add(new OnePair(1L, "e", 2L, "01"));
+                                add(new OnePair(1L, "e", 2L, "001"));
+                                add(new OnePair(1L, "e", 3L, "g"));
+                                add(new OnePair(1L, "e", 3L, "h"));
+                                add(new OnePair(1L, "e", 3L, "i"));
+                                add(new OnePair(1L, "e", 4L, "j"));
+                                add(new OnePair(1L, "e", 4L, "k"));
+
+                                add(new OnePair(1L, "f", 2L, "01"));
+                                add(new OnePair(1L, "f", 2L, "001"));
+                                add(new OnePair(1L, "f", 3L, "g"));
+                                add(new OnePair(1L, "f", 3L, "h"));
+                                add(new OnePair(1L, "f", 3L, "i"));
+                                add(new OnePair(1L, "f", 4L, "j"));
+                                add(new OnePair(1L, "f", 4L, "k"));
+
+                                // pairs starting with parameter 3
+                                add(new OnePair(2L, "01", 3L, "g"));
+                                add(new OnePair(2L, "01", 3L, "h"));
+                                add(new OnePair(2L, "01", 3L, "i"));
+                                add(new OnePair(2L, "01", 4L, "j"));
+                                add(new OnePair(2L, "01", 4L, "k"));
+
+                                add(new OnePair(2L, "001", 3L, "g"));
+                                add(new OnePair(2L, "001", 3L, "h"));
+                                add(new OnePair(2L, "001", 3L, "i"));
+                                add(new OnePair(2L, "001", 4L, "j"));
+                                add(new OnePair(2L, "001", 4L, "k"));
+
+                                // pairs starting with parameter 4
+                                add(new OnePair(3L, "g", 4L, "j"));
+                                add(new OnePair(3L, "g", 4L, "k"));
+
+                                add(new OnePair(3L, "h", 4L, "j"));
+                                add(new OnePair(3L, "h", 4L, "k"));
+
+                                add(new OnePair(3L, "i", 4L, "j"));
+                                add(new OnePair(3L, "i", 4L, "k"));
+
+                        }
+                };
+                assertTrue(PairComparator.hasAllPairs(allPairs, combinations));
         }
 
 }

@@ -117,27 +117,6 @@ public class AllPairList {
                 return pairIndexes.toArray(new Integer[pairIndexes.size()]);
         }
 
-        // private Long getParameterIdByValueIndex(int index) {
-        // if (index >= 0 && index < valueCount) {
-        // return parameterIds[index];
-        // }
-        // return null;
-        // }
-        //
-        // private String getParameterNameByValueIndex(int index) {
-        // if (index >= 0 && index < valueCount) {
-        // return parameterNames[index];
-        // }
-        // return null;
-        // }
-        //
-        // private String getParameterValueByValueIndex(int index) {
-        // if (index >= 0 && index < valueCount) {
-        // return parameterValues[index];
-        // }
-        // return null;
-        // }
-
         public int getValueCount() {
                 return valueCount;
         }
